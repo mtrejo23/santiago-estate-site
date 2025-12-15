@@ -1,0 +1,32 @@
+@use '../abstracts' as a;
+
+html {
+    box-sizing: border-box;
+    font-size: 100%;
+    scroll-behavior: smooth;
+}
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: a.$font-secondary;
+    font-size: a.$fs-md;
+    line-height: a.$lh-md;
+    background-color: a.$clr-lighter-tan;
+}
+img,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+p {
+    font-size: inherit;
+}
+a {
+    color: inherit;
+}

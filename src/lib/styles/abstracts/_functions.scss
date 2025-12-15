@@ -1,0 +1,14 @@
+// px to rem converter
+@function toRem($values...) {
+    $remValues: ();
+
+    @each $value in $values {
+        @if $value == 0 {
+            $remValues: append($remValues, 0);
+        } @else {
+            $remValues: append($remValues, ($value / 16) + rem);
+        }
+    }
+
+    @return $remValues;
+}

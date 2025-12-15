@@ -1,0 +1,53 @@
+@use '../abstracts' as a;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: a.$font-primary;
+    font-weight: a.$fw-light;
+    line-height: a.$lh-sm;
+    margin-top: 0;
+}
+h1 {
+    font-size: a.$fs-h1;
+    margin-bottom: 1.5rem;
+}
+h2 {
+    font-size: a.$fs-h2;
+    margin-bottom: 1.25rem;
+}
+h3 {
+    font-size: a.$fs-h3;
+    margin-bottom: 1rem;
+}
+h4 {
+    font-size: a.$fs-h4;
+}
+h5 {
+    font-size: a.$fs-h5;
+}
+h6 {
+    font-size: a.$fs-h6;
+}
+p {
+    margin-top: 0;
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+.display {
+    font-size: a.$fs-display;
+    line-height: a.$lh-sm;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}

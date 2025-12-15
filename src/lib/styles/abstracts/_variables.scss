@@ -1,0 +1,56 @@
+// Colors
+$clr-white: #fff;
+$clr-black: #000;
+$clr-tan: #BD9F7D;
+$clr-light-tan: #F4ECE2;
+$clr-lighter-tan: #F9F6F1;
+$clr-red: #c60000;
+
+// Fonts
+$font-primary: 'fraunces', serif;
+$font-secondary: 'montserrat', sans-serif;
+
+// Heading Font size
+$fs-h1: clamp(3rem, 1.2394366197183098rem + 7.511737089201878vw, 8rem);
+$fs-h2: clamp(2.5rem, 1.619718309859155rem + 3.755868544600939vw, 5rem);
+$fs-h3: clamp(1.75rem, 1.6619718309859155rem + 0.3755868544600939vw, 2rem);
+$fs-h4: clamp(1.5rem, 1.323943661971831rem + 0.7511737089201878vw, 2rem);
+$fs-h5: clamp(1.125rem, 0.9929577464788732rem + 0.5633802816901408vw, 1.5rem);
+$fs-h6: 1rem;
+
+// Body Font Size
+$fs-display-xl: clamp(4.5rem, 0.45070422535211296rem + 17.27699530516432vw, 16rem);
+$fs-display: clamp(2.5rem, 1.267605633802817rem + 5.258215962441314vw, 6rem);
+$fs-xl: clamp(1.5rem, 1.2359154929577465rem + 1.1267605633802815vw, 2.25rem);
+$fs-lg: clamp(1.125rem, 0.9929577464788732rem + 0.5633802816901408vw, 1.5rem);
+$fs-md: clamp(1rem, 0.9559859154929577rem + 0.18779342723004694vw, 1.125rem);
+$fs-sm: .875rem;
+$fs-text-button: clamp(2.25rem, 1.6338028169014085rem + 2.629107981220657vw, 4rem);
+
+// Font Weight
+$fw-light: 300;
+$fw-normal: 400;
+$fw-bold: 700;
+
+// Line Height
+$lh-sm: 1em;
+$lh-md: 1.5em;
+
+// Letter spacing
+$ls: .075rem;
+
+// Section spacing
+$section-sp: clamp(1.5rem, 0.971830985915493rem + 2.253521126760563vw, 3rem);
+
+// Spacing scale
+$gap-0_25: 0.25rem;
+$gap-0_5: 0.5rem;
+$gap-0_75: 0.75rem;
+$gap-1: 1rem;
+$gap-1_5: clamp(1rem, 0.823943661971831rem + 0.7511737089201878vw, 1.5rem);
+$gap-2: clamp(1.25rem, 0.9859154929577465rem + 1.1267605633802815vw, 2rem);
+$gap-3: clamp(1.5rem, 0.971830985915493rem + 2.253521126760563vw, 3rem);
+$gap-4: clamp(2rem, 1.295774647887324rem + 3.004694835680751vw, 4rem);
+$gap-5: clamp(2.5rem, 1.619718309859155rem + 3.755868544600939vw, 5rem);
+$gap-6: clamp(3rem, 1.943661971830986rem + 4.507042253521126vw, 6rem);
+$gap-12: clamp(6rem, 3.887323943661972rem + 9.014084507042252vw, 12rem);

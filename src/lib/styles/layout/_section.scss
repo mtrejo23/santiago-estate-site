@@ -1,0 +1,6 @@
+@use '../abstracts' as a;
+
+section {
+    position: relative;
+    padding-block: a.$section-sp;
+}
