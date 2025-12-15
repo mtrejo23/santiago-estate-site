@@ -3,20 +3,42 @@ import { WP_BASE } from '$env/static/private';
 
 type MenuItem = {
     id: number;
-    title: { rendered: string };
-    url: string;
+    title?: { rendered: string };
+    url?: string;
     target?: string;
 };
 
-// Normalize URLs
-const localizeUrl = (url: string) => {
+/**
+ * WordPress REST base
+ * WP_BASE should be the site origin (NO /wp-json)
+ */
+const WP_API = `${WP_BASE.replace(/\/$/, '')}/wp-json`;
+
+/**
+ * Normalize URLs coming from WordPress
+ */
+const localizeUrl = (url?: string) => {
     if (!url || typeof url !== 'string') return url;
-    if (url.startsWith('tel:') || url.startsWith('mailto:') || url.startsWith('sms:')) return url;
-    return url.startsWith(WP_BASE) ? url.replace(WP_BASE, '') : url;
+
+    if (
+        url.startsWith('tel:') ||
+        url.startsWith('mailto:') ||
+        url.startsWith('sms:')
+    ) {
+        return url;
+    }
+
+    // Convert absolute WP URLs → relative
+    return url.startsWith(WP_BASE)
+        ? url.replace(WP_BASE, '')
+        : url;
 };
 
 const normalizeUrls = (obj: any): any => {
-    if (Array.isArray(obj)) return obj.map(normalizeUrls);
+    if (Array.isArray(obj)) {
+        return obj.map(normalizeUrls);
+    }
+
     if (obj && typeof obj === 'object') {
         const copy: any = {};
         for (const key in obj) {
@@ -27,44 +49,65 @@ const normalizeUrls = (obj: any): any => {
         }
         return copy;
     }
+
     return obj;
+};
+
+/**
+ * Safe JSON fetch helper
+ * Prevents HTML / 404 responses from crashing the layout
+ */
+const safeJson = async (res: Response) => {
+    const text = await res.text();
+
+    if (!res.ok) {
+        console.error('WP fetch failed:', res.status, text.slice(0, 200));
+        return null;
+    }
+
+    try {
+        return JSON.parse(text);
+    } catch {
+        console.error('Invalid JSON from WP:', text.slice(0, 200));
+        return null;
+    }
 };
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
     try {
-        // Load ACF options
-        const optionsRes = await fetch(`${WP_BASE}/wp-json/acf/v3/options/options`);
-        const optionsJson = await optionsRes.json();
-        const normalizedOptions = normalizeUrls(optionsJson?.acf ?? {});
+        /**
+         * ACF Options
+         */
+        const optionsRes = await fetch(
+            `${WP_API}/acf/v3/options/options`
+        );
 
-        // Load menu
-        const menuRes = await fetch(`${WP_BASE}/wp-json/wp/v2/menu-items?menus=3`);
-        
-        let menuJson: unknown = null;
-        try {
-            menuJson = await menuRes.json();
-        } catch (e) {
-            console.error("Menu JSON parse failed:", e);
-        }
+        const optionsJson = await safeJson(optionsRes);
+        const options = normalizeUrls(optionsJson?.acf ?? {});
 
-        if (!Array.isArray(menuJson)) {
-            console.error("Menu response is not an array:", menuJson);
-            menuJson = [];
-            console.log('MENU RESPONSE:', menuJson);
-        }
+        /**
+         * Menu
+         */
+        const menuRes = await fetch(
+            `${WP_API}/wp/v2/menu-items?menus=3`
+        );
 
-        const menuItems = (menuJson as MenuItem[]).map(item => ({
-            ...item,
-            url: localizeUrl(item.url)
-        }));
+        const menuJson = await safeJson(menuRes);
+
+        const menuItems = Array.isArray(menuJson)
+            ? menuJson.map((item: MenuItem) => ({
+                ...item,
+                url: localizeUrl(item.url)
+            }))
+            : [];
 
         return {
             menuItems,
-            options: normalizedOptions
+            options
         };
-
     } catch (err) {
-        console.error("Layout load error:", err);
+        console.error('Layout load error:', err);
+
         return {
             menuItems: [],
             options: {}
