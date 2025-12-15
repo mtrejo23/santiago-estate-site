@@ -1,5 +1,6 @@
 import type { LayoutServerLoad } from './$types';
 import { WP_BASE } from '$env/static/private';
+import { localizeUrl, normalizeUrls } from '$lib/wp/normalizer';
 
 type MenuItem = {
     id: number;
@@ -13,63 +14,6 @@ type MenuItem = {
  * WP_BASE should be the site origin (NO /wp-json)
  */
 const WP_API = `${WP_BASE.replace(/\/$/, '')}/wp-json`;
-
-/**
- * Normalize URLs coming from WordPress
- */
-const localizeUrl = (url?: string) => {
-    if (!url || typeof url !== 'string') return url;
-
-    // Allow special protocols
-    if (
-        url.startsWith('tel:') ||
-        url.startsWith('mailto:') ||
-        url.startsWith('sms:')
-    ) {
-        return url;
-    }
-
-    // Handle Flywheel placeholders like {flywheel-site-url}
-    if (url.includes('{') && url.includes('}')) {
-        try {
-            const parsed = new URL(url.replace(/\{.*?\}/g, WP_BASE));
-            return parsed.pathname + parsed.search + parsed.hash;
-        } catch {
-            return '/';
-        }
-    }
-
-    // Convert absolute WP URLs → relative
-    if (url.startsWith(WP_BASE)) {
-        return url.replace(WP_BASE, '');
-    }
-
-    // Already relative
-    if (url.startsWith('/')) {
-        return url;
-    }
-
-    return url;
-};
-
-const normalizeUrls = (obj: any): any => {
-    if (Array.isArray(obj)) {
-        return obj.map(normalizeUrls);
-    }
-
-    if (obj && typeof obj === 'object') {
-        const copy: any = {};
-        for (const key in obj) {
-            const val = obj[key];
-            copy[key] = key.toLowerCase().includes('url')
-                ? localizeUrl(val)
-                : normalizeUrls(val);
-        }
-        return copy;
-    }
-
-    return obj;
-};
 
 /**
  * Safe JSON fetch helper
@@ -101,10 +45,13 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
         );
 
         const optionsJson = await safeJson(optionsRes);
-        const options = normalizeUrls(optionsJson?.acf ?? {});
+        const options = normalizeUrls(
+            optionsJson?.acf ?? {},
+            WP_BASE
+        );
 
         /**
-         * Menu
+         * Menu (CPT-based)
          */
         const menuRes = await fetch(
             `${WP_API}/wp/v2/menu-items?menus=3`
@@ -115,7 +62,7 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
         const menuItems = Array.isArray(menuJson)
             ? menuJson.map((item: MenuItem) => ({
                 ...item,
-                url: localizeUrl(item.url)
+                url: localizeUrl(item.url, WP_BASE)
             }))
             : [];
 
