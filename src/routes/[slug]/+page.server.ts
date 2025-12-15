@@ -1,4 +1,5 @@
 import type { PageServerLoad } from './$types';
+import { getPage } from '$lib/wp/yoastSeo';
 import { WP_BASE } from '$env/static/private';
 
 const localizeUrl = (url: string) => {
@@ -33,33 +34,32 @@ async function renderShortcode(shortcode: string) {
 export const load: PageServerLoad = async ({ params, fetch }) => {
     const slug = params.slug;
 
-    const res = await fetch(`${WP_BASE}/wp-json/wp/v2/pages?slug=${slug}`);
-    const json = await res.json();
+    try {
+        const { page, seo } = await getPage(fetch, { slug });
 
-    if (!json || json.length === 0) {
-        throw new Response('Page not found', { status: 404 });
-    }
+        if (page?.acf) {
+            page.acf = normalizeUrls(page.acf);
 
-    const page = json[0];
-
-    if (page?.acf) {
-        page.acf = normalizeUrls(page.acf);
-
-        if (page.acf.content_blocks) {
-            for (const block of page.acf.content_blocks) {
-                if (block.acf_fc_layout === 'contact_form_block') {
-                    if (block.contact_form_block_form_shortcode) {
-                        block.formHtml = await renderShortcode(
-                            block.contact_form_block_form_shortcode
-                        );
+            if (page.acf.content_blocks) {
+                for (const block of page.acf.content_blocks) {
+                    if (block.acf_fc_layout === 'contact_form_block') {
+                        if (block.contact_form_block_form_shortcode) {
+                            block.formHtml = await renderShortcode(
+                                block.contact_form_block_form_shortcode
+                            );
+                        }
                     }
                 }
             }
         }
+
+        return {
+            page,
+            seo
+        };
+    } catch (err) {
+        throw new Response('Page not found', { status: 404 });
     }
-
-    return { page };
-
 };
 
 // Jotform integration

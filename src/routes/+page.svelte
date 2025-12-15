@@ -2,6 +2,7 @@
     import Hero from '$lib/components/Hero.svelte';
     import Events from '$lib/components/Events.svelte';
     import Highlights from '$lib/components/Highlights.svelte';
+    import Seo from '$lib/components/Seo.svelte'
 
     export let data;
     const acf = data.acf;
@@ -16,6 +17,7 @@
     const WP = import.meta.env.PUBLIC_WP_BASE;
 </script>
 
+<Seo seo={data?.seo} />
 
 <Hero {hero} {hero_video_url} {full_video_url} />
 <Events {events} />

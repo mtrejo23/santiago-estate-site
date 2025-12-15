@@ -9,16 +9,8 @@ type MenuItem = {
     target?: string;
 };
 
-/**
- * WordPress REST base
- * WP_BASE should be the site origin (NO /wp-json)
- */
 const WP_API = `${WP_BASE.replace(/\/$/, '')}/wp-json`;
 
-/**
- * Safe JSON fetch helper
- * Prevents HTML / 404 responses from crashing the layout
- */
 const safeJson = async (res: Response) => {
     const text = await res.text();
 
@@ -35,11 +27,11 @@ const safeJson = async (res: Response) => {
     }
 };
 
-export const load: LayoutServerLoad = async ({ fetch }) => {
+export const load: LayoutServerLoad = async ({ fetch, parent }) => {
+    // ✅ THIS LINE IS THE FIX
+    const parentData = await parent();
+
     try {
-        /**
-         * ACF Options
-         */
         const optionsRes = await fetch(
             `${WP_API}/acf/v3/options/options`
         );
@@ -50,9 +42,6 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
             WP_BASE
         );
 
-        /**
-         * Menu (CPT-based)
-         */
         const menuRes = await fetch(
             `${WP_API}/wp/v2/menu-items?menus=3`
         );
@@ -66,7 +55,9 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
             }))
             : [];
 
+        // ✅ MERGE PAGE DATA BACK IN
         return {
+            ...parentData,
             menuItems,
             options
         };
@@ -74,6 +65,7 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
         console.error('Layout load error:', err);
 
         return {
+            ...parentData,
             menuItems: [],
             options: {}
         };

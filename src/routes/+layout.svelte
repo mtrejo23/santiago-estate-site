@@ -8,15 +8,17 @@
     import Contact from '$lib/components/Contact.svelte';
     import Footer from '$lib/components/Footer.svelte';
 
-    export let data;
+    export let data: {
+        menuItems: any[];
+        options: any;
+        seo?: any;
+    };
 
     const menuItems = data?.menuItems ?? [];
     const options = data?.options ?? {};
 </script>
 
 <svelte:head>
-    <title>Santiago Vineyard & Estate</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="{faviconUrl}" type="image/svg+xml" />
 </svelte:head>
 
