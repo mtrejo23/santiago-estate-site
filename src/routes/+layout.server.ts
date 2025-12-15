@@ -20,6 +20,7 @@ const WP_API = `${WP_BASE.replace(/\/$/, '')}/wp-json`;
 const localizeUrl = (url?: string) => {
     if (!url || typeof url !== 'string') return url;
 
+    // Allow special protocols
     if (
         url.startsWith('tel:') ||
         url.startsWith('mailto:') ||
@@ -28,10 +29,27 @@ const localizeUrl = (url?: string) => {
         return url;
     }
 
+    // Handle Flywheel placeholders like {flywheel-site-url}
+    if (url.includes('{') && url.includes('}')) {
+        try {
+            const parsed = new URL(url.replace(/\{.*?\}/g, WP_BASE));
+            return parsed.pathname + parsed.search + parsed.hash;
+        } catch {
+            return '/';
+        }
+    }
+
     // Convert absolute WP URLs → relative
-    return url.startsWith(WP_BASE)
-        ? url.replace(WP_BASE, '')
-        : url;
+    if (url.startsWith(WP_BASE)) {
+        return url.replace(WP_BASE, '');
+    }
+
+    // Already relative
+    if (url.startsWith('/')) {
+        return url;
+    }
+
+    return url;
 };
 
 const normalizeUrls = (obj: any): any => {
