@@ -44,27 +44,40 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col">
-            <div class="hero__video flex align-center justify-center">
-                <video autoplay muted loop playsinline class="hero__video-bg">
-                    <source src={hero_video_url} type="video/mp4">
-                </video>
-                <div class="container--small">
-                    <div class="hero__video__content flex flex-column">
-                        <h2 class="text-center hero__video__title">
-                            {hero?.hero_video_title}
-                        </h2>
-                        <div class="button-wrapper flex justify-center">
-                            <Button
-                                type="text-button"
-                                classes="glightbox"
-                                href={full_video_url}>
-                                {hero?.hero_video_button_label}
-                            </Button>
-                        </div>
-                    </div>
+    <div class="hero__video flex align-center justify-center">
+        <img
+            class="hero__video-poster"
+            src={hero?.hero_video_poster.sizes["Medium Size"]}
+            alt={hero?.hero_video_poster.alt ?? ''}
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+            srcset={`
+                ${hero?.hero_video_poster.sizes["Thumb Size"]} ${hero?.hero_video_poster.sizes["Thumb Size-width"]}w,
+                ${hero?.hero_video_poster.sizes["Medium Size"]} ${hero?.hero_video_poster.sizes["Medium Size-width"]}w,
+                ${hero?.hero_video_poster.sizes["Large Size"]} ${hero?.hero_video_poster.sizes["Large Size-width"]}w,
+                ${hero?.hero_video_poster.sizes["2048x2048"]} ${hero?.hero_video_poster.sizes["2048x2048-width"]}w
+            `}
+            sizes="(max-width: 768px) 100vw, 50vw"
+        />
+        <video autoplay muted loop playsinline preload="metadata" class="hero__video-bg">
+            <source
+                src={hero_video_url}
+                type="video/mp4"
+            >
+        </video>
+        <div class="container--small">
+            <div class="hero__video__content flex flex-column">
+                <h2 class="text-center hero__video__title">
+                    {hero?.hero_video_title}
+                </h2>
+                <div class="button-wrapper flex justify-center">
+                    <Button
+                        type="text-button"
+                        classes="glightbox"
+                        href={full_video_url}>
+                        {hero?.hero_video_button_label}
+                    </Button>
                 </div>
             </div>
         </div>
@@ -94,6 +107,12 @@
         color: a.$clr-white;
         @media (min-width: 992px) {
             aspect-ratio: 16/9;
+        }
+        &-poster {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         &-bg {
             position: absolute;
