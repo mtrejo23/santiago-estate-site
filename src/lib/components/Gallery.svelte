@@ -13,13 +13,15 @@
                <img
                     src={image.sizes["Medium Size"]}
                     alt={image.alt || image.title}
+                    width={image.width}
+                    height={image.height}
                     srcset={`
                          ${image.sizes["Thumb Size"]} ${image.sizes["Thumb Size-width"]}w,
                          ${image.sizes["Medium Size"]} ${image.sizes["Medium Size-width"]}w,
                          ${image.sizes["Large Size"]} ${image.sizes["Large Size-width"]}w,
                          ${image.sizes["2048x2048"]} ${image.sizes["2048x2048-width"]}w
                     `}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 991px) 50vw, 33vw"
                     class="gallery__image"
                />
           {/each}

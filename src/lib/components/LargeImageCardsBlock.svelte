@@ -12,13 +12,15 @@
                     <img
                         src={card.large_image_cards_block_cards_image.sizes["Medium Size"]}
                         alt={card.large_image_cards_block_cards_image.alt}
+                        width={card.large_image_cards_block_cards_image.width}
+                        height={card.large_image_cards_block_cards_image.height}
                         srcset={`
                             ${card.large_image_cards_block_cards_image.sizes["Thumb Size"]} ${card.large_image_cards_block_cards_image.sizes["Thumb Size-width"]}w,
                             ${card.large_image_cards_block_cards_image.sizes["Medium Size"]} ${card.large_image_cards_block_cards_image.sizes["Medium Size-width"]}w,
                             ${card.large_image_cards_block_cards_image.sizes["Large Size"]} ${card.large_image_cards_block_cards_image.sizes["Large Size-width"]}w,
                             ${card.large_image_cards_block_cards_image.sizes["2048x2048"]} ${card.large_image_cards_block_cards_image.sizes["2048x2048-width"]}w
                         `}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        sizes="(max-width: 991px) 100vw, 66vw"
                         class="large-image-cards-block__card__image"
                     />
                     <div class="large-image-cards-block__card__content flex flex-column justify-center">

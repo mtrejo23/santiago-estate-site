@@ -16,13 +16,15 @@
                 class="about__image"
                 src={about?.about_us_image.sizes["Medium Size"]}
                 alt={about?.about_us_image.alt ?? ''}
+                width={about?.about_us_image.width}
+                height={about?.about_us_image.height}
                 srcset={`
                     ${about?.about_us_image.sizes["Thumb Size"]} ${about?.about_us_image.sizes["Thumb Size-width"]}w,
                     ${about?.about_us_image.sizes["Medium Size"]} ${about?.about_us_image.sizes["Medium Size-width"]}w,
                     ${about?.about_us_image.sizes["Large Size"]} ${about?.about_us_image.sizes["Large Size-width"]}w,
                     ${about?.about_us_image.sizes["2048x2048"]} ${about?.about_us_image.sizes["2048x2048-width"]}w
                 `}
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="(max-width: 991px) 100vw, 50vw"
             />
             {/if}
 

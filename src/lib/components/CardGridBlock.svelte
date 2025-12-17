@@ -12,13 +12,15 @@
                     <img
                         src={card.card_grid_block_card_image.sizes["Medium Size"]}
                         alt={card.card_grid_block_card_image.alt}
+                        width={card.card_grid_block_card_image.width}
+                        height={card.card_grid_block_card_image.height}
                         srcset={`
                             ${card.card_grid_block_card_image.sizes["Thumb Size"]} ${card.card_grid_block_card_image.sizes["Thumb Size-width"]}w,
                             ${card.card_grid_block_card_image.sizes["Medium Size"]} ${card.card_grid_block_card_image.sizes["Medium Size-width"]}w,
                             ${card.card_grid_block_card_image.sizes["Large Size"]} ${card.card_grid_block_card_image.sizes["Large Size-width"]}w,
                             ${card.card_grid_block_card_image.sizes["2048x2048"]} ${card.card_grid_block_card_image.sizes["2048x2048-width"]}w
                         `}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        sizes="(max-width: 991px) 100vw, 33vw"
                         class="card-grid-block__card__image"
                     />
                     <div>

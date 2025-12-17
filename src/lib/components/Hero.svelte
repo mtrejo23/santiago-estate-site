@@ -10,7 +10,6 @@
     let lightbox: any;
 
     onMount(async () => {
-        // Dynamically import only in the browser
         const GLightbox = (await import('glightbox')).default;
         await import('glightbox/dist/css/glightbox.css');
 
@@ -47,8 +46,10 @@
     <div class="hero__video flex align-center justify-center">
         <img
             class="hero__video-poster"
-            src={hero?.hero_video_poster.sizes["Medium Size"]}
+            src={hero?.hero_video_poster.sizes["Large Size"]}
             alt={hero?.hero_video_poster.alt ?? ''}
+            width={hero.hero_video_poster.width}
+            height={hero.hero_video_poster.height}
             loading="eager"
             decoding="async"
             fetchpriority="high"
@@ -58,7 +59,7 @@
                 ${hero?.hero_video_poster.sizes["Large Size"]} ${hero?.hero_video_poster.sizes["Large Size-width"]}w,
                 ${hero?.hero_video_poster.sizes["2048x2048"]} ${hero?.hero_video_poster.sizes["2048x2048-width"]}w
             `}
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="100vw"
         />
         <video autoplay muted loop playsinline preload="metadata" class="hero__video-bg">
             <source

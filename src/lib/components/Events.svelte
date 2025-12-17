@@ -23,13 +23,15 @@ export let events: any;
                         <img
                             src={card.events_card_image.sizes["Medium Size"]}
                             alt={card.events_card_image.alt}
+                            width={card.events_card_image.width}
+                            height={card.events_card_image.height}
                             srcset={`
                                 ${card.events_card_image.sizes["Thumb Size"]} ${card.events_card_image.sizes["Thumb Size-width"]}w,
                                 ${card.events_card_image.sizes["Medium Size"]} ${card.events_card_image.sizes["Medium Size-width"]}w,
                                 ${card.events_card_image.sizes["Large Size"]} ${card.events_card_image.sizes["Large Size-width"]}w,
                                 ${card.events_card_image.sizes["2048x2048"]} ${card.events_card_image.sizes["2048x2048-width"]}w
                             `}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            sizes="(max-width: 991px) 100vw, 50vw"
                             class="events__event-card__image"
                         />
                         <div>
