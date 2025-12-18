@@ -1,4 +1,6 @@
 <script lang="ts">
+     import Image from '$lib/components/Image.svelte';
+
      export let gallery: any;
 </script>
 
@@ -10,20 +12,13 @@
      </div>
      <div class="gallery__grid grid grid-cols-2 md:grid-cols-3">
           {#each gallery?.gallery_images as image}
-               <img
-                    src={image.sizes["Medium Size"]}
-                    alt={image.alt || image.title}
-                    width={image.width}
-                    height={image.height}
-                    srcset={`
-                         ${image.sizes["Thumb Size"]} ${image.sizes["Thumb Size-width"]}w,
-                         ${image.sizes["Medium Size"]} ${image.sizes["Medium Size-width"]}w,
-                         ${image.sizes["Large Size"]} ${image.sizes["Large Size-width"]}w,
-                         ${image.sizes["2048x2048"]} ${image.sizes["2048x2048-width"]}w
-                    `}
-                    sizes="(max-width: 991px) 50vw, 33vw"
-                    class="gallery__image"
-               />
+               <div class="gallery__image">
+                    <Image
+                         image={image}
+                         sizes="(max-width: 991px) 50vw, 33vw"
+                         cover
+                    />
+               </div>
           {/each}
      </div>
 </section>
@@ -45,9 +40,7 @@
     }
     &__image {
         aspect-ratio: 1/1;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        overflow: hidden;
     }
 }
 

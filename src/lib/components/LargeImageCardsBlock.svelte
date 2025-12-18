@@ -1,5 +1,6 @@
 <script lang="ts">
-    import Button from '$lib/components/Button.svelte'
+    import Button from '$lib/components/Button.svelte';
+    import Image from "$lib/components/Image.svelte";
 
     export let block: any;
 </script>
@@ -9,20 +10,13 @@
         <div class="grid md:grid-cols-3">
             {#each block?.large_image_cards_block_cards as card}
                 <div class="large-image-cards-block__card">
-                    <img
-                        src={card.large_image_cards_block_cards_image.sizes["Medium Size"]}
-                        alt={card.large_image_cards_block_cards_image.alt}
-                        width={card.large_image_cards_block_cards_image.width}
-                        height={card.large_image_cards_block_cards_image.height}
-                        srcset={`
-                            ${card.large_image_cards_block_cards_image.sizes["Thumb Size"]} ${card.large_image_cards_block_cards_image.sizes["Thumb Size-width"]}w,
-                            ${card.large_image_cards_block_cards_image.sizes["Medium Size"]} ${card.large_image_cards_block_cards_image.sizes["Medium Size-width"]}w,
-                            ${card.large_image_cards_block_cards_image.sizes["Large Size"]} ${card.large_image_cards_block_cards_image.sizes["Large Size-width"]}w,
-                            ${card.large_image_cards_block_cards_image.sizes["2048x2048"]} ${card.large_image_cards_block_cards_image.sizes["2048x2048-width"]}w
-                        `}
-                        sizes="(max-width: 991px) 100vw, 66vw"
-                        class="large-image-cards-block__card__image"
-                    />
+                    <div class="large-image-cards-block__card__image">
+                        <Image
+                            image={card.large_image_cards_block_cards_image}
+                            sizes="(max-width: 991px) 100vw, 66vw"
+                            cover
+                        />
+                    </div>
                     <div class="large-image-cards-block__card__content flex flex-column justify-center">
                         <div>
                             <h2 class="large-image-cards-block__card__title">
@@ -67,9 +61,7 @@
         }
         &__image {
             aspect-ratio: 8 / 5;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            overflow: hidden;
             @media (min-width: 992px) {
                 grid-column: 1 / span 2;
                 grid-row: 1;

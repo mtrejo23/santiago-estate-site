@@ -1,5 +1,6 @@
 <script lang="ts">
     import Button from '$lib/components/Button.svelte';
+    import Image from '$lib/components/Image.svelte';
 
     export let about: any;
 
@@ -12,20 +13,13 @@
         <div class="about__grid grid md:grid-cols-2">
 
             {#if about?.about_us_image.sizes}
-            <img
-                class="about__image"
-                src={about?.about_us_image.sizes["Medium Size"]}
-                alt={about?.about_us_image.alt ?? ''}
-                width={about?.about_us_image.width}
-                height={about?.about_us_image.height}
-                srcset={`
-                    ${about?.about_us_image.sizes["Thumb Size"]} ${about?.about_us_image.sizes["Thumb Size-width"]}w,
-                    ${about?.about_us_image.sizes["Medium Size"]} ${about?.about_us_image.sizes["Medium Size-width"]}w,
-                    ${about?.about_us_image.sizes["Large Size"]} ${about?.about_us_image.sizes["Large Size-width"]}w,
-                    ${about?.about_us_image.sizes["2048x2048"]} ${about?.about_us_image.sizes["2048x2048-width"]}w
-                `}
-                sizes="(max-width: 991px) 100vw, 50vw"
-            />
+                <div class="about__image">
+                    <Image
+                        image={about?.about_us_image}
+                        sizes="(max-wdth; 991px) 100vw, 50vw"
+                        cover
+                    />
+                </div>
             {/if}
 
             <div class="about__content flex flex-column justify-center">
@@ -59,7 +53,6 @@
     &__image {
         aspect-ratio: 4/5;
         overflow: hidden;
-        object-fit: cover;
     }
     &__content {
         gap: a.$gap-2;

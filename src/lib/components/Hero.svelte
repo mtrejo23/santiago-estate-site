@@ -1,5 +1,6 @@
 <script lang="ts">
     import Button from '$lib/components/Button.svelte';
+    import Image from '$lib/components/Image.svelte';
 
     export let hero: any;
     export let hero_video_url: string | null;
@@ -44,23 +45,15 @@
         </div>
     </div>
     <div class="hero__video flex align-center justify-center">
-        <img
-            class="hero__video-poster"
-            src={hero?.hero_video_poster.sizes["Large Size"]}
-            alt={hero?.hero_video_poster.alt ?? ''}
-            width={hero.hero_video_poster.width}
-            height={hero.hero_video_poster.height}
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-            srcset={`
-                ${hero?.hero_video_poster.sizes["Thumb Size"]} ${hero?.hero_video_poster.sizes["Thumb Size-width"]}w,
-                ${hero?.hero_video_poster.sizes["Medium Size"]} ${hero?.hero_video_poster.sizes["Medium Size-width"]}w,
-                ${hero?.hero_video_poster.sizes["Large Size"]} ${hero?.hero_video_poster.sizes["Large Size-width"]}w,
-                ${hero?.hero_video_poster.sizes["2048x2048"]} ${hero?.hero_video_poster.sizes["2048x2048-width"]}w
-            `}
-            sizes="100vw"
-        />
+        <div class="hero__video-poster">
+            <Image
+                image={hero?.hero_video_poster}
+                sizes="100vw"
+                loading="eager"
+                fetchpriority="high"
+                cover
+            />
+        </div>
         <video autoplay muted loop playsinline preload="metadata" class="hero__video-bg">
             <source
                 src={hero_video_url}
@@ -104,16 +97,15 @@
         margin-top: a.$gap-6;
         overflow: hidden;
         aspect-ratio: 1/1;
-        height: 100%;
         color: a.$clr-white;
         @media (min-width: 992px) {
             aspect-ratio: 16/9;
         }
         &-poster {
             position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
         }
         &-bg {
             position: absolute;

@@ -1,5 +1,6 @@
 <script lang="ts">
 import Button from '$lib/components/Button.svelte';
+import Image from '$lib/components/Image.svelte';
 
 export let events: any;
 </script>
@@ -20,20 +21,13 @@ export let events: any;
             {#each events?.events_card as card}
                 <article class="events__event-card flex flex-column justify-between">
                     <div class="events__event-card__content flex flex-column">
-                        <img
-                            src={card.events_card_image.sizes["Medium Size"]}
-                            alt={card.events_card_image.alt}
-                            width={card.events_card_image.width}
-                            height={card.events_card_image.height}
-                            srcset={`
-                                ${card.events_card_image.sizes["Thumb Size"]} ${card.events_card_image.sizes["Thumb Size-width"]}w,
-                                ${card.events_card_image.sizes["Medium Size"]} ${card.events_card_image.sizes["Medium Size-width"]}w,
-                                ${card.events_card_image.sizes["Large Size"]} ${card.events_card_image.sizes["Large Size-width"]}w,
-                                ${card.events_card_image.sizes["2048x2048"]} ${card.events_card_image.sizes["2048x2048-width"]}w
-                            `}
-                            sizes="(max-width: 991px) 100vw, 50vw"
-                            class="events__event-card__image"
-                        />
+                        <div class="events__event-card__image">
+                            <Image
+                                image={card.events_card_image}
+                                sizes="(max-width: 991px) 100vw, 50vw"
+                                cover
+                            />
+                        </div>
                         <div>
                             <h3>
                                 {card.events_card_title}
@@ -81,9 +75,7 @@ export let events: any;
         }
         &__image {
             aspect-ratio: 8/5;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            overflow: hidden;
         }
     }
 }

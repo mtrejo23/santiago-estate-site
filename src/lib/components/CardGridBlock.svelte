@@ -1,5 +1,6 @@
 <script lang="ts">
     import Button from '$lib/components/Button.svelte'
+    import Image from '$lib/components/Image.svelte'
 
     export let block: any;
 </script>
@@ -9,20 +10,13 @@
         <div class="grid md:grid-cols-3">
             {#each block?.card_grid_block_card as card}
                 <div class="card-grid-block__card flex flex-column">
-                    <img
-                        src={card.card_grid_block_card_image.sizes["Medium Size"]}
-                        alt={card.card_grid_block_card_image.alt}
-                        width={card.card_grid_block_card_image.width}
-                        height={card.card_grid_block_card_image.height}
-                        srcset={`
-                            ${card.card_grid_block_card_image.sizes["Thumb Size"]} ${card.card_grid_block_card_image.sizes["Thumb Size-width"]}w,
-                            ${card.card_grid_block_card_image.sizes["Medium Size"]} ${card.card_grid_block_card_image.sizes["Medium Size-width"]}w,
-                            ${card.card_grid_block_card_image.sizes["Large Size"]} ${card.card_grid_block_card_image.sizes["Large Size-width"]}w,
-                            ${card.card_grid_block_card_image.sizes["2048x2048"]} ${card.card_grid_block_card_image.sizes["2048x2048-width"]}w
-                        `}
-                        sizes="(max-width: 991px) 100vw, 33vw"
-                        class="card-grid-block__card__image"
-                    />
+                    <div class="card-grid-block__card__image">
+                        <Image
+                            image={card.card_grid_block_card_image}
+                            sizes="(max-width: 991px) 100vw, 33vw"
+                            cover
+                        />
+                    </div>
                     <div>
                         <h3>
                             {card.card_grid_block_card_title}
@@ -60,9 +54,7 @@
         gap: a.$gap-2;
         &__image {
             aspect-ratio: 8/5;
-            width: 100%;
-            height: auto;
-            object-fit: cover;
+            overflow: hidden;
         }
     }
 }
