@@ -76,9 +76,7 @@
                         <Button type="submit">Submit</Button>
                     </form>
 
-                    {#if form?.success}
-                        <p class="success text-center">Your message was sent!</p>
-                    {:else if form?.error}
+                    {#if form?.error}
                         <p class="error text-center">Something went wrong. Please try again.</p>
                     {/if}
                 </div>
@@ -133,9 +131,9 @@
         color: a.$clr-white;
         margin-block: a.$gap-1;
     }
-    .success {
+    /*.success {
         background-color: a.$clr-black;
-    }
+    }*/
     .error {
         background-color: a.$clr-red;
     }

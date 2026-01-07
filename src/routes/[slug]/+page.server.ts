@@ -65,42 +65,65 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 // Jotform integration
 
 import type { Actions } from "./$types";
-import { JOTFORM_API_KEY, JOTFORM_FORM_ID } from "$env/static/private";
+import { redirect } from "@sveltejs/kit";
+import { JOTFORM_FORM_ID } from "$env/static/private";
+
+function splitYmd(value: string) {
+    const m = value?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!m) return null;
+    return { year: m[1], month: m[2], day: m[3] };
+}
 
 export const actions: Actions = {
-	default: async ({ request }) => {
-		const fd = await request.formData();
+    default: async ({ request, fetch }) => {
+        const fd = await request.formData();
 
-		const urlEncoded = new URLSearchParams();
+        const body = new URLSearchParams();
+        body.set("formID", JOTFORM_FORM_ID);
 
-        urlEncoded.append("submission[3][first]", fd.get("first_name") as string);
-        urlEncoded.append("submission[3][last]", fd.get("last_name") as string);
-        urlEncoded.append("submission[4]", fd.get("email") as string);
-        urlEncoded.append("submission[5][full]", fd.get("phone") as string);
-        urlEncoded.append("submission[6]", fd.get("event_date") as string);
-        urlEncoded.append("submission[7]", fd.get("message") as string);
+        body.set("q3_name[first]", String(fd.get("first_name") ?? "").trim());
+        body.set("q3_name[last]", String(fd.get("last_name") ?? "").trim());
+        body.set("q4_email", String(fd.get("email") ?? "").trim());
+        body.set("q5_phoneNumber[full]", String(fd.get("phone") ?? "").trim());
+        body.set("q7_message", String(fd.get("message") ?? "").trim());
 
-        // JotForm system flags that force notification emails
-        urlEncoded.append("systemSource", "web");
-        urlEncoded.append("sendNotification", "1");
-        urlEncoded.append("system", "email");
+        body.set("q8_typeA", "web");
+        body.set("website", "");
+        body.set("simple_spc", `${JOTFORM_FORM_ID}-${JOTFORM_FORM_ID}`);
 
-        const res = await fetch(
-            `https://api.jotform.com/form/${JOTFORM_FORM_ID}/submissions?apiKey=${JOTFORM_API_KEY}`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: urlEncoded.toString()
+        const dateParts = splitYmd(String(fd.get("event_date") ?? "").trim());
+        if (dateParts) {
+            body.set("q6_date[month]", dateParts.month);
+            body.set("q6_date[day]", dateParts.day);
+            body.set("q6_date[year]", dateParts.year);
+        }
+
+        // IMPORTANT: manual so we can capture Location
+        const res = await fetch(`https://submit.jotform.com/submit/${JOTFORM_FORM_ID}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: body.toString(),
+            redirect: "manual"
+        });
+
+        // Jotform success is usually a redirect
+        if (res.status === 302 || res.status === 303) {
+            const loc = res.headers.get("location");
+            if (loc) {
+                // Location can be relative; make it absolute
+                const thankYouUrl = new URL(loc, "https://submit.jotform.com").toString();
+                throw redirect(303, thankYouUrl);
             }
-        );
+        }
 
-		if (!res.ok) {
-			console.error(await res.text());
-			return { error: true };
-		}
+        if (!res.ok) {
+            console.error("Jotform submit failed:", res.status, await res.text());
+            return { error: true };
+        }
 
-		return { success: true };
-	},
+        // Fallback: if Jotform returns 200, just stay put
+        return { success: true };
+    }
 };
