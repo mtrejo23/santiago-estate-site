@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { page } from '$app/stores';
+
     import faviconUrl from '$lib/assets/favicon.svg';
     import '$lib/styles/app.scss';
 
@@ -29,7 +31,10 @@
 
     <Gallery gallery={options} />
     <About about={options} />
-    <Contact contact={options} />
+
+    {#if $page.url.pathname !== '/contact'}
+        <Contact contact={options} />
+    {/if}
 </main>
 
 <Footer {menuItems} />
