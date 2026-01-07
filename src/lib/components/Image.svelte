@@ -12,11 +12,11 @@
 
 {#if normalized}
 <picture class:cover>
-    <source
+    <!--<source
         type="image/webp"
         srcset={normalized.webpSrcset}
         sizes={sizes}
-    />
+    />-->
 
     <img
         src={normalized.src}
