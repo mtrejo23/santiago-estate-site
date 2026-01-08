@@ -3,9 +3,6 @@
     import Image from '$lib/components/Image.svelte';
 
     export let about: any;
-
-    // Map ACF fields inside the component
-    const button = about?.about_us_button ?? {};
 </script>
 
 <section class="about">
@@ -32,7 +29,10 @@
 
                 {#if about?.about_us_button.url}
                 <div class="button-wrapper">
-                    <Button type="button" href={about?.about_us_button.url} target={about?.about_us_button.target}>
+                    <Button
+                        type="button"
+                        href={about?.about_us_button.url}
+                        target={about?.about_us_button.target}>
                         {about?.about_us_button.title}
                     </Button>
                 </div>

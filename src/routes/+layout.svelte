@@ -16,6 +16,7 @@
         seo?: any;
     };
 
+    const header = data?.options ?? {};
     const menuItems = data?.menuItems ?? [];
     const options = data?.options ?? {};
 </script>
@@ -24,7 +25,7 @@
     <link rel="icon" href="{faviconUrl}" type="image/svg+xml" />
 </svelte:head>
 
-<Header {menuItems} />
+<Header {menuItems} {header}/>
 
 <main>
     <slot />

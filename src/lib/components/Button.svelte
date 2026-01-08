@@ -60,12 +60,12 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: a.$fs-sm;
+    font-size: a.$fs-xs;
     line-height: a.$lh-sm;
     color: a.$clr-black;
     text-transform: uppercase;
     text-decoration: none;
-    letter-spacing: 1.4px;
+    letter-spacing: .75px;
     padding: 18px;
     border: 1px solid #000;
     background: a.$clr-white;

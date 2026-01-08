@@ -1,8 +1,10 @@
 <script lang="ts">
 import { onMount, tick } from 'svelte';
 import gsap from 'gsap';
+import Button from './Button.svelte';
 
 export let menuItems: any[] | null;
+export let header: any;
 
 let menuWrapper: HTMLElement;
 let menuItemsEls: HTMLElement[] = [];
@@ -112,6 +114,15 @@ onMount(() => {
             </ul>
             </div>
 
+            {#if header?.header_button.url}
+                <Button
+                    type="button"
+                    label={header?.header_button?.title}
+                    url={header?.header_button?.url}
+                    target={header?.header_button?.target}
+                />
+            {/if}
+
             <div class="menu-button" bind:this={menuButton}>
             <!-- Hamburger icon SVG -->
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -137,6 +148,7 @@ onMount(() => {
     z-index: 9999;
 
     &__menu-wrapper {
+        display: none;
         position: fixed;
         width: 100%;
         height: 100%;
@@ -179,7 +191,7 @@ onMount(() => {
 }
 
 .menu-button {
-    display: block;
+    display: none;
 
     @media (min-width: 992px) {
         display: none;

@@ -35,7 +35,7 @@
             </div>
             <div class="footer__secondary flex flex-column md:flex-row md:justify-between md:align-center">
                 <div class="footer__copyright">
-                    <p>©{currentYear} Santiago Estate + Vineyard | All Rights Reserved</p>
+                    <p>©{currentYear} Santiago Estate + Vineyard | All Rights Reserved | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-use">Terms of Use</a></p>
                 </div>
                 <div class="footer__social flex">
                     <a href="https://www.facebook.com/santiagoestate/" class="footer__social__link" target="_blank" title="Facebook">

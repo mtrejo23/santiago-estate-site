@@ -55,14 +55,27 @@
                         <div class="form-field">
                             <label>
                                 <span class="visually-hidden">Phone:</span>
-                                <input type="tel" name="phone"placeholder="Phone" required>
+                                <input type="tel" name="phone" placeholder="Phone" required>
                             </label>
                         </div>
 
                         <div class="form-field">
                             <label>
-                                Event Date:
+                                Desired Event Date:
                                 <input type="date" name="event_date" required>
+                            </label>
+                        </div>
+
+                        <div class="form-field">
+                            <label>
+                                Event Type:
+                                <select name="event_type" required>
+                                    <option value="" disabled selected>Please Select</option>
+                                    <option value="Wedding">Wedding</option>
+                                    <option value="Corporate Event">Corporate Event</option>
+                                    <option value="Special/Other">Special/Other</option>
+                                    <option value="Unique Request">Unique Request</option>
+                                </select>
                             </label>
                         </div>
 
@@ -80,6 +93,7 @@
                         <p class="error text-center">Something went wrong. Please try again.</p>
                     {/if}
                 </div>
+                <p class="opt-out">By pressing “SUBMIT,” I agree to receive SMS messages from Santiago Estate & Vineyard and its event management company to the provided mobile number and also agree to the Santiago Estate & Vineyard <a href="/terms-of-use">terms</a> and <a href="/privacy-policy">privacy policy</a>. Message & data rates may apply. Reply STOP to opt out.</p>
             </div>
         </div>
     </div>
@@ -106,7 +120,10 @@
         gap: a.$gap-4;
     }
     .form-field {
-        input, textarea {
+        label {
+            font-size: a.$fs-sm;
+        }
+        input, textarea, select {
             width: 100%;
             padding: a.$gap-0_75;
             font-size: a.$fs-sm;
@@ -118,6 +135,10 @@
             min-height: 6rem;
         }
     }
+    .opt-out {
+        font-size: a.$fs-xs;
+        line-height: a.$lh-md;
+    }
     .visually-hidden {
         position: absolute !important;
         width: 1px;
@@ -126,15 +147,10 @@
         clip: rect(0, 0, 0, 0);
         white-space: nowrap;
     }
-    .success, .error {
+    .error {
         padding: a.$gap-1;
         color: a.$clr-white;
         margin-block: a.$gap-1;
-    }
-    /*.success {
-        background-color: a.$clr-black;
-    }*/
-    .error {
         background-color: a.$clr-red;
     }
 }
